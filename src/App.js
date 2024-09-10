@@ -1,159 +1,220 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import MainPage from "./pages/MainPage";
+import CardsLayer from "./pages/CardsLayer";
+import QuestionsLayer from "./pages/QuestionsLayer";
 import './App.css';
-import 'animate.css';
 
 function App() {
-  const [storyName, setStoryName] = useState('');
-  const [mainCharacter, setMainCharacter] = useState('');
-  const [setting, setSetting] = useState('');
-  const [currentPage, setCurrentPage] = useState('form'); // Manage the current page ('form', 'cards', 'nextPage')
-  const [selectedCards, setSelectedCards] = useState([]); // Track which cards are selected
+    const [page, setPage] = useState("main-page")
 
-  const storyElements = [
-    "Absentation: Someone goes missing",
-    "Interdiction: Hero is warned",
-    "Violation of interdiction",
-    "Reconnaissance: Villain seeks something",
-    "Delivery: The villain gains information",
-    "Trickery: Villain attempts to deceive victim",
-    "Complicity: Unwitting helping of the enemy"
-  ];
+    const [storyName, setStoryName] = useState("");
+    const [mainCharacter, setMainCharacter] = useState("");
+    const [moral, setMoral] = useState("");
 
-  const handleNextClick = () => {
-    setCurrentPage('cards'); // Show all cards after form
-  };
+    const [layerOneData, setLayerOneData] = useState({});
+    const [selectedCardsLayerOne, setSelectedCardsLayerOne] = useState({});
+    const [layerOneAnswers, setLayerOneAnswers] = useState({});
 
-  const handleCardClick = (index) => {
-    // Toggle the card selection
-    setSelectedCards((prevSelected) => {
-      if (prevSelected.includes(index)) {
-        return prevSelected.filter(cardIndex => cardIndex !== index); // Deselect card
-      } else {
-        return [...prevSelected, index]; // Select card
-      }
-    });
-  };
+    const [layerTwoData, setLayerTwoData] = useState({});
+    const [selectedCardsLayerTwo, setSelectedCardsLayerTwo] = useState({});
+    const [layerTwoAnswers, setLayerTwoAnswers] = useState({});
 
-  const handleBackClick = () => {
-    setCurrentPage('form'); // Back to the form page
-  };
+    const [layerThreeData, setLayerThreeData] = useState({});
+    const [selectedCardsLayerThree, setSelectedCardsLayerThree] = useState({});
+    const [layerThreeAnswers, setLayerThreeAnswers] = useState({});
 
-  const handleNextPageClick = () => {
-    setCurrentPage('nextPage'); // Navigate to the next page after the cards
-  };
+    const [layerFourData, setLayerFourData] = useState({});
+    const [selectedCardsLayerFour, setSelectedCardsLayerFour] = useState({});
+    const [layerFourAnswers, setLayerFourAnswers] = useState({});
 
-  return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex flex-col items-center justify-center p-4 relative">
-      {/* Back Button for Character Name Page */}
-      {currentPage !== 'form' && (
-        <button
-          className="absolute top-4 left-4 bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-300 ease-in-out"
-          onClick={handleBackClick}
-        >
-          Back
-        </button>
-      )}
+    const [layerFiveData, setLayerFiveData] = useState({});
+    const [selectedCardsLayerFive, setSelectedCardsLayerFive] = useState({});
+    const [layerFiveAnswers, setLayerFiveAnswers] = useState({});
 
-      {currentPage === 'form' && (
-        <div className="bg-white shadow-lg rounded-lg p-10 max-w-md w-full animate__animated animate__fadeIn">
-          <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">Create Your Story</h1>
-          
-          <form>
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Story Name</label>
-              <input 
-                type="text"
-                value={storyName}
-                onChange={(e) => setStoryName(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300"
-                placeholder="Enter story name..."
-              />
+    useEffect(() => {
+        fetch("/layerOne.json")
+                .then(response => response.json())
+                .then(data => setLayerOneData(data))
+                .catch(error => console.error("Error loading JSON:", error));
+        fetch("/layerTwo.json")
+                .then(response => response.json())
+                .then(data => setLayerTwoData(data))
+                .catch(error => console.error("Error loading JSON:", error));
+        fetch("/layerThree.json")
+                .then(response => response.json())
+                .then(data => setLayerThreeData(data))
+                .catch(error => console.error("Error loading JSON:", error));
+        fetch("/layerFour.json")
+                .then(response => response.json())
+                .then(data => setLayerFourData(data))
+                .catch(error => console.error("Error loading JSON:", error));
+        fetch("/layerFive.json")
+                .then(response => response.json())
+                .then(data => setLayerFiveData(data))
+                .catch(error => console.error("Error loading JSON:", error));
+    }, []);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (page == "main-page") {
+            setPage("layer-one");
+        }
+        else if (page == "layer-one") {
+            setPage("layer-two");
+        }
+        else if (page == "layer-two") {
+            setPage("layer-three");
+        }
+        else if (page == "layer-three") {
+            setPage("layer-four");
+        }
+        else if (page == "layer-four") {
+            setPage("layer-five");
+        }
+        else if (page == "layer-five") {
+            setPage("layer-six");
+        }
+        else if (page == "layer-six") {
+            setPage("layer-seven");
+        }
+        else if (page == "layer-seven") {
+            setPage("layer-eight");
+        }
+        else if (page == "layer-eight") {
+            setPage("layer-nine");
+        }
+        else if (page == "layer-nine") {
+            setPage("layer-ten");
+        }
+    };
+
+    const handleBackClick = (e) => {
+        e.preventDefault();
+        if (page == "layer-one") {
+            setPage("main-page");
+        }
+        else if (page == "layer-two") {
+            setPage("layer-one");
+        }
+        else if (page == "layer-three") {
+            setPage("layer-two");
+        }
+        else if (page == "layer-four") {
+            setPage("layer-three");
+        }
+        else if (page == "layer-five") {
+            setPage("layer-four");
+        }
+        else if (page == "layer-six") {
+            setPage("layer-five");
+        }
+        else if (page == "layer-seven") {
+            setPage("layer-six");
+        }
+        else if (page == "layer-eight") {
+            setPage("layer-seven");
+        }
+        else if (page == "layer-nine") {
+            setPage("layer-eight");
+        }
+        else if (page == "layer-ten") {
+            setPage("layer-nine");
+        }
+    }
+
+    return (
+        <div className="App">
+            <div className="back-button-container">
+                <button className="back-button" onClick={handleBackClick}>
+                    ← Back
+                </button>
             </div>
-
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Main Character</label>
-              <input 
-                type="text"
-                value={mainCharacter}
-                onChange={(e) => setMainCharacter(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300"
-                placeholder="Enter main character..."
-              />
-            </div>
-
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Setting of the Story</label>
-              <textarea 
-                value={setting}
-                onChange={(e) => setSetting(e.target.value)}
-                className="w-full h-24 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300 resize-none"
-                placeholder="Enter setting..."
-              />
-            </div>
-
-            <div className="text-center">
-              <button 
-                type="button"
-                className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
-                onClick={handleNextClick}
-              >
-                Next
-              </button>
-            </div>
-          </form>
+            {page == "main-page" && <MainPage
+                storyName={storyName}
+                setStoryName={setStoryName}
+                mainCharacter={mainCharacter}
+                setMainCharacter={setMainCharacter}
+                moral={moral}
+                setMoral={setMoral}
+                handleSubmit={handleSubmit}
+            />}
+            {page == "layer-one" && <CardsLayer 
+                heading={"PART I: Explosion"}
+                phrase={"Pick the parts of the story that show who the main characters are and where they are, so we can get ready for the adventure!"}
+                layerOneFunctions={layerOneData}
+                selectedCards={selectedCardsLayerOne}
+                setSelectedCards={setSelectedCardsLayerOne}
+                handleSubmit={handleSubmit}
+            />}
+            {page === "layer-two" && <QuestionsLayer 
+                  selectedCards={selectedCardsLayerOne} 
+                  layerData={layerOneData}
+                  layerAnswers={layerOneAnswers}
+                  setLayerAnswers={setLayerOneAnswers}
+                  handleSubmit={handleSubmit}
+            />}
+            {page == "layer-three" && <CardsLayer 
+                heading={"PART II: Rising Action"}
+                phrase={"Choose the exciting moments that build up the tension and lead the characters toward their biggest challenge."}
+                layerOneFunctions={layerTwoData}
+                selectedCards={selectedCardsLayerTwo}
+                setSelectedCards={setSelectedCardsLayerTwo}
+                handleSubmit={handleSubmit}
+            />}
+            {page === "layer-four" && <QuestionsLayer 
+                  selectedCards={selectedCardsLayerTwo} 
+                  layerData={layerTwoData}
+                  layerAnswers={layerTwoAnswers}
+                  setLayerAnswers={setLayerTwoAnswers}
+                  handleSubmit={handleSubmit}
+            />}
+            {page == "layer-five" && <CardsLayer 
+                heading={"PART III: Climax"}
+                phrase={"Select the moment in the story when the main character faces their greatest challenge."}
+                layerOneFunctions={layerThreeData}
+                selectedCards={selectedCardsLayerThree}
+                setSelectedCards={setSelectedCardsLayerThree}
+                handleSubmit={handleSubmit}
+            />}
+            {page === "layer-six" && <QuestionsLayer 
+                  selectedCards={selectedCardsLayerThree} 
+                  layerData={layerThreeData}
+                  layerAnswers={layerThreeAnswers}
+                  setLayerAnswers={setLayerThreeAnswers}
+                  handleSubmit={handleSubmit}
+            />}
+            {page == "layer-seven" && <CardsLayer 
+                heading={"PART IV: Falling Action"}
+                phrase={"Pick the scenes where the characters deal with the consequences of the climax."}
+                layerOneFunctions={layerFourData}
+                selectedCards={selectedCardsLayerFour}
+                setSelectedCards={setSelectedCardsLayerFour}
+                handleSubmit={handleSubmit}
+            />}
+            {page === "layer-eight" && <QuestionsLayer 
+                  selectedCards={selectedCardsLayerFour} 
+                  layerData={layerFourData}
+                  layerAnswers={layerFourAnswers}
+                  setLayerAnswers={setLayerFourAnswers}
+                  handleSubmit={handleSubmit}
+            />}
+            {page == "layer-nine" && <CardsLayer 
+                heading={"PART V: Resolution"}
+                phrase={"Choose how the story wraps up. Here, all the loose ends are tied, and the characters find closure."}
+                layerOneFunctions={layerFiveData}
+                selectedCards={selectedCardsLayerFive}
+                setSelectedCards={setSelectedCardsLayerFive}
+                handleSubmit={handleSubmit}
+            />}
+            {page === "layer-ten" && <QuestionsLayer 
+                  selectedCards={selectedCardsLayerFive} 
+                  layerData={layerFiveData}
+                  layerAnswers={layerFiveAnswers}
+                  setLayerAnswers={setLayerFiveAnswers}
+                  handleSubmit={handleSubmit}
+            />}
         </div>
-      )}
-
-      {currentPage === 'cards' && (
-        <>
-          {/* Title */}
-          <h1 className="text-2xl font-bold text-white mb-6 text-center">
-            Select the story elements to introduce the situation and most of the main characters, setting the scene for subsequent adventure.
-          </h1>
-          
-          {/* Cards */}
-          <div className="flex flex-wrap items-center justify-center animate__animated animate__fadeInUp">
-            {storyElements.map((element, index) => (
-              <div 
-                key={index} 
-                className={`relative bg-white shadow-lg rounded-lg w-48 h-64 m-4 p-6 cursor-pointer transition-transform duration-300 transform hover:scale-105 ${selectedCards.includes(index) ? 'bg-gray-100' : ''}`}
-                onClick={() => handleCardClick(index)} // Toggle card selection
-              >
-                {selectedCards.includes(index) ? (
-                  <div className="flex flex-col justify-start items-center w-full h-full">
-                    <h2 className="text-lg font-bold text-gray-800 text-center mb-2">{element}</h2>
-                    <textarea 
-                      className="w-full h-3/4 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-300"
-                      placeholder="Write your notes here..."
-                    />
-                  </div>
-                ) : (
-                  <h2 className="text-xl font-bold text-gray-800 text-center">{element}</h2>
-                )}
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-
-      {/* Next Button in the Bottom Center */}
-      {currentPage === 'cards' && (
-        <button
-          className="absolute bottom-8 bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-in-out"
-          onClick={handleNextPageClick}
-        >
-          Next
-        </button>
-      )}
-
-      {currentPage === 'nextPage' && (
-        <div className="bg-white shadow-lg rounded-lg p-10 max-w-md w-full text-center animate__animated animate__fadeIn">
-          <h1 className="text-3xl font-bold text-gray-800 mb-8">You are on the Next Page!</h1>
-          <p>This is the next section where further actions or details can be added.</p>
-        </div>
-      )}
-    </div>
-  );
+    );
 }
 
 export default App;
