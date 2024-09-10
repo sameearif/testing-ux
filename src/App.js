@@ -111,7 +111,7 @@ function App() {
                 handleSubmit={handleSubmit}
             />}
             {page == "layer-one" && <CardsLayer 
-                heading={"PART I: Explosion"}
+                heading={"PART I: Exposition"}
                 phrase={"Pick the parts of the story that show who the main characters are and where they are, so we can get ready for the adventure!"}
                 layerFunction={layerOneData}
                 selectedCards={selectedCardsLayerOne}
